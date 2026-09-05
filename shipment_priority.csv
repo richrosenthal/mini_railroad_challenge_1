@@ -1,0 +1,6 @@
+shipment_type,priority
+Medical_Supplies,1
+Perishable_Food,2
+Express_Freight,3
+Automotive_Parts,4
+General_Freight,5

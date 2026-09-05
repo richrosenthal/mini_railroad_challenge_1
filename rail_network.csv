@@ -1,0 +1,15 @@
+start_station,end_station,distance_miles,travel_time_minutes,delay_minutes
+Denver,Boulder,30,35,5
+Denver,Castle_Rock,32,38,4
+Castle_Rock,Colorado_Springs,42,45,6
+Colorado_Springs,Pueblo,45,48,7
+Pueblo,Trinidad,85,90,10
+Boulder,Fort_Collins,45,50,8
+Fort_Collins,Cheyenne,47,52,6
+Denver,Golden,15,20,3
+Golden,Idaho_Springs,28,32,5
+Idaho_Springs,Georgetown,14,18,4
+Georgetown,Breckenridge,55,65,9
+Breckenridge,Vail,38,45,8
+Vail,Aspen,102,115,12
+Aspen,Grand_Junction,128,140,15
