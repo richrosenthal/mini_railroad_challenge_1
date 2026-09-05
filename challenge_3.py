@@ -1,16 +1,26 @@
 import csv # import the csv library
 
-shipments = [] # initialize an empty list to store each shipment from the csv file
 
-with open("shipments.csv") as csvfile:
-    reader = csv.DictReader(csvfile)
 
-    for row in reader:
-        shipments.append(row)
+def load_csv(filename):
+    data = []
+    with open(filename, newline="") as csv_file:
+        reader = csv.DictReader(csv_file)
+        for row in reader:
+            data.append(row)
+        return data
 
-for shipment in shipments:
-    print(
-        f"Shipment {shipment['shipment_id']}: "
-        f"{shipment['shipment_type']} travels from "
-        f"{shipment['origin_station']} to {shipment['destination_station']}. "
-    )
+trains = load_csv("train.csv")
+shipments = load_csv("shipments.csv")
+shipment_priorities = load_csv("shipment_priority.csv")
+rail_connections = load_csv("rail_network.csv")
+
+#Display the loaded data
+print("Python Rail Systems")
+print("___________________")
+print(f"Trains loaded: {len(trains)}")
+print(f"Shipments loaded: {len(shipments)}")
+print(f"Shipment priorities loaded: {len(shipment_priorities)}")
+print(f"Rail connections loaded: {len(rail_connections)}")
+print()
+print("READY FOR ROUTE PLANNING")
