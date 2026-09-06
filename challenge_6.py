@@ -1,4 +1,5 @@
 import csv
+import heapq
 
 #Function: Load a CSV
 
@@ -111,4 +112,130 @@ if shipments:
     print(f"Shipment Priority: {current_shipment['priority']}")
     print(f"Route: {start_station} -> {destination_station}")
 else:
-    print("\nNo shipmnents are available")
+    print("\nNo shipmnents are available for route planning")
+
+## Begin Dijkstra Algorithm
+print("\n Starting Dijkstra's Algorithm...")
+print(f"Finding the fastest route from {start_station} to {destination_station}")
+
+#Initialize the distance table
+#Create an empty dictionary to stare the shortest known
+#travel time from the starting station to every station
+distances = {}
+
+#set every station's distance to infinity.
+#This means no route has been discovered yet
+for station in rail_graph:
+    distances[station] = float("inf")
+
+#The starting station is always zero minutes away
+#because the huorney beings there
+distances[start_station] = 0
+
+#display the initial distance tables
+print("\n INITIAL DISTAANCE TABLE")
+print("=" * 40)
+
+for station, distance in distances.items():
+    if distance == float("inf"):
+        print(f"{station}: infinity")
+    else:
+        print(f"{station}: {distance}")
+
+# Initialize previous table to store breadcrumbs
+previous = {}
+
+#At the start of the algorithm, no station has a predecessor.
+for station in rail_graph:
+    previous[station] = None
+
+#Display the initial previous-station table
+print("\n INITIAL PREVIOUS-STATION TABLE")
+print("=" * 40)
+
+for station, previous_station in previous.items():
+    print(f"{station} -> {previous_station}")
+
+#Initialize Visited Set
+#Create an empty set to store station that have been
+# completely processed
+
+visited = set()
+
+#Display the initial visited set
+print("\n INITIAL VISITED SET")
+print("+" * 40)
+print(visited)
+
+# Initialize the priority Queue
+#Create an empty priority queue
+#This queue will store stations waiting to be explored
+priority_queue = []
+
+#Add the sarting station to the priority queue
+#The tuple contains
+# (Current shortest travel time, station name)
+# The starting station always begins with a travel time of 0
+
+heapq.heappush(priority_queue, (0, start_station))
+
+#Display the initial priorrity queue
+print("\nInitial Priority Queue")
+print("=" * 40)
+print(priority_queue)
+
+#Begin Dijkstra's Search
+
+while priority_queue:
+    current_distance, current_station = heapq.heappop(priority_queue) #heeppop() removes the smmlest item
+    if current_station in visited:
+        continue
+    #Mark this station as complete
+    visited.add(current_station)
+
+    print()
+    print(f"Now exploring: {current_station}")
+    print(f"Current travel time: {current_distance} minutes")
+
+#Now that we've arrived at a station...time to explore neighboring stations
+#This loop asks the question, from the station I am currently at, where can I go next and how long will it take to get there
+for neighbor, travel_time in rail_graph[current_station].items():
+    print(f"Neighbor: {neighbor}")
+    print(f"Travel Time: {travel_time} minutes")
+
+    #Calculate the new travel time for e3ach neighboring station, Dijkstra calculates how long it would take to reach that station
+    #new calculated travel time is compared to the current best travel travel_time#
+    #Calculate the total travel time to reach the neighboring by traveling throught eh current station
+
+    new_distance = current_distance + travel_time
+
+    print(f"Current Distance: {current_distance}")
+    print(f"Track Time  :{travel_time} minutes")
+    print(f"New Distance: {new_distance} ")
+
+#If the new route is shorter than the current best-known route, update our records
+    if new_distance < distances[neighbor]:
+        print("Shorter route found! Updating records.")
+        #Update the shortest travel time
+        distances[neighbor] = new_distance
+
+        #Record the previous station so the shortest path can be reconstructed later
+        previous[neighbor] = current_station
+
+        #Add the neighboring station abck into the priority queue using its new travel time
+        heapq.heappush(priority_queue, (new_distance, neighbor))
+    else:
+        print("Existing route is already shorter")
+
+#show results
+    print("\nFinal Distance Table")
+    print("=" * 40)
+
+    for station, distance in distances.items():
+        print(f"{station} -> {distance}")
+
+    print("\nPREVIOUS TABLE")
+    print("=" * 40)
+
+    for station, previous_station in previous.items():
+        print(f"{station} -> {previous_station}")
